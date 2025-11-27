@@ -31,7 +31,7 @@ def _get_twse_comprehensive_list():
         "5871.TW", "2379.TW", "1326.TW", "3045.TW", "1605.TW", "2887.TW", "2327.TW", "2890.TW",
         "4904.TW", "6669.TW", "2345.TW", "1590.TW", "1102.TW", "9910.TW", "2408.TW", "2474.TW",
         # ETFs
-        "0050.TW", "0056.TW", "00878.TW", "006208.TW",
+        "0050.TW", "0052.TW", "0056.TW", "00878.TW", "006208.TW",
         # Mid-Cap 100 (selection)
         "2603.TW", "2609.TW", "2615.TW", "2006.TW", "2014.TW", "1722.TW", "1795.TW", "2344.TW",
         "2377.TW", "2409.TW", "3044.TW", "3231.TW", "3533.TW", "3661.TW", "4958.TW",
@@ -100,22 +100,57 @@ def calculate_indicators(df, config):
     df['DIminus'] = (df['DMminus_exp'] / df['TR_exp']).replace(np.inf, 0).fillna(0) * 100
     df['DX'] = np.abs(df['DIplus'] - df['DIminus']) / (df['DIplus'] + df['DIminus']).replace(0, np.nan) * 100
     df['ADX'] = df['DX'].ewm(span=adx_period, adjust=False).mean()
+    # Bollinger Bands calculation
+    bb_window = config.get("bb_window", 20)
+    bb_std_dev = config.get("bb_std_dev", 2)
+    df['bb_ma'] = df['Close'].rolling(window=bb_window).mean()
+    df['bb_std'] = df['Close'].rolling(window=bb_window).std()
+    df['bb_upper'] = df['bb_ma'] + (df['bb_std'] * bb_std_dev)
+    df['bb_lower'] = df['bb_ma'] - (df['bb_std'] * bb_std_dev)
     return df
 
 def get_barometer_status(row, config):
-    price = row['Close']; ma_short = row['ma_short']; ma_long = row['ma_long']; rsi = row['RSI']
-    if pd.isna(ma_long) or pd.isna(ma_short): return "數據不足"
+    price = row['Close']
+    ma_short = row['ma_short']
+    ma_long = row['ma_long']
+    rsi = row['RSI']
+    bb_upper = row.get('bb_upper')
+    bb_lower = row.get('bb_lower')
+
+    if pd.isna(ma_long) or pd.isna(ma_short) or pd.isna(bb_upper):
+        return "數據不足"
+
+    is_bullish_ma = price > ma_short > ma_long
+    is_bearish_ma = ma_long > ma_short > price
+
     try:
-        if price > ma_short > ma_long and rsi > config["rsi_bull_threshold"]:
+        # 1. 極端情況 (晴天 / 颱風天)
+        if is_bullish_ma and rsi > config["rsi_bull_threshold"]:
+            if price > bb_upper:
+                return "☀️ 晴天 (注意過熱)"
             return "☀️ 晴天"
-        elif price > ma_short and price > ma_long: return "🌥️ 多雲"
-        elif ma_long > price > ma_short or (ma_short > price and price > ma_long): return "☁️ 陰天"
-        elif ma_short > price and ma_long > price and rsi < config["rsi_bear_threshold"]:
-            return "🌧️ 雨天"
-        elif ma_short > price and ma_long > price and rsi < config["rsi_oversold"]:
+
+        if is_bearish_ma and rsi < config["rsi_oversold"]:
+            if price < bb_lower:
+                return "⛈️ 颱風天 (注意恐慌)"
             return "⛈️ 颱風天"
-        else: return "☁️ 陰天"
-    except (ValueError, TypeError): return "數據不足"
+
+        # 2. 一般多頭/空頭 (多雲 / 雨天)
+        if price > ma_short and price > ma_long:
+            if price > bb_upper:
+                return "🌥️ 多雲 (趨勢增強)"
+            return "🌥️ 多雲"
+
+        if ma_long > price and ma_short > price:
+            if price < bb_lower:
+                return "🌧️ 雨天 (趨勢增強)"
+            return "🌧️ 雨天"
+
+        # 3. 盤整或趨勢不明
+        return "☁️ 陰天"
+
+    except (ValueError, TypeError):
+        return "數據不足"
 
 def get_recovery_status(row, prev_row, config):
     if pd.isna(row['MACD_hist']) or pd.isna(row['Drawdown']) or pd.isna(row.get('ADX')): return "數據不足"

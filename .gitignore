@@ -1,0 +1,8 @@
+# Python bytecode
+__pycache__/
+
+# Data cache files
+*.pkl
+
+# Log files
+*.txt
