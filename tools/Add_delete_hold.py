@@ -1,7 +1,7 @@
 import sys
 import os
 
-HOLD_LIST_FILE = "hold_list.txt"
+HOLD_LIST_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "hold_list.txt")
 
 def read_hold_list():
     """讀取持股清單，返回一個包含股票代碼的集合(set)。"""

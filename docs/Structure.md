@@ -7,17 +7,27 @@ This project is a stock analysis and scanning system designed to identify tradin
 ```
 d:\sun_rain
 ├── Auto_scan.py                # Main entry point for automated stock scanning
-├── scan_module.py              # Core module containing analysis logic and data fetching
-├── stock_analysis.py           # Single stock analysis with visualization (Plotly)
-├── judge_stock.py              # CLI tool for quick diagnosis of a single stock
-├── optimizer.py                # Strategy parameter optimization tool
-├── batch_tester.py             # Batch backtesting tool for strategy validation
-├── Add_delete_hold.py          # Utility to manage the hold list
-├── test_suite.py               # Test suite for the project
-├── Model_conf.py               # Default model configuration
-├── Model_conf_aggressive.py    # Aggressive strategy configuration
-├── Model_conf_alt.py           # Alternative model configuration
-└── hold_list.txt               # Text file storing user's held tickers
+├── config/                     # Configuration files
+│   ├── __init__.py
+│   ├── Model_conf.py
+│   ├── Model_conf_aggressive.py
+│   └── Model_conf_alt.py
+├── core/                       # Core logic
+│   ├── __init__.py
+│   └── scan_module.py
+├── tools/                      # Standalone tools
+│   ├── __init__.py
+│   ├── stock_analysis.py
+│   ├── judge_stock.py
+│   ├── optimizer.py
+│   ├── batch_tester.py
+│   └── Add_delete_hold.py
+├── data/                       # Data files
+│   └── hold_list.txt
+├── tests/                      # Tests
+│   └── test_suite.py
+├── docs/                       # Documentation
+│   └── Structure.md
 ```
 
 ## 3. Module Descriptions

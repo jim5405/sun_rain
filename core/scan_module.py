@@ -10,7 +10,7 @@ import os
 import sys
 
 # --- Hold List File ---
-HOLD_LIST_FILE = "hold_list.txt"
+HOLD_LIST_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "hold_list.txt")
 
 # --- Stock List Acquisition Functions ---
 def _get_sp500_tickers_from_wiki():
@@ -55,7 +55,12 @@ def read_hold_list():
 
 def load_config(model_name):
     try:
-        module = importlib.import_module(model_name)
+        # Try importing from config package first
+        try:
+            module = importlib.import_module(f"config.{model_name}")
+        except ImportError:
+            # Fallback for backward compatibility or if not in config package
+            module = importlib.import_module(model_name)
         return module.CONFIG
     except ImportError:
         print(f"Error: Model config file '{model_name}.py' not found.", file=sys.stderr)

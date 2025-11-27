@@ -5,6 +5,10 @@ import sys
 import argparse
 import importlib
 
+import os
+# Add parent directory to sys.path to allow importing config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # --- 核心功能函數 ---
 def get_stock_data(ticker, period="2y"):
     stock = yf.Ticker(ticker)
@@ -52,7 +56,10 @@ def get_recommendation(barometer, recovery):
 def load_config(model_name):
     """動態導入指定的模型設定檔"""
     try:
-        module = importlib.import_module(model_name)
+        try:
+            module = importlib.import_module(f"config.{model_name}")
+        except ImportError:
+            module = importlib.import_module(model_name)
         return module.CONFIG
     except ImportError:
         print(f"錯誤: 找不到模型設定檔 '{model_name}.py'。")

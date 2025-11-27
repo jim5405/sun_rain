@@ -11,6 +11,10 @@ TICKERS_TO_TEST = [
     "0050.TW", "006208.TW", "2330.TW", "VOO", "QQQ", "MSFT", "AAPL"
 ]
 
+import os
+# Add parent directory to sys.path to allow importing config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # --- 核心功能函數 ---
 def get_stock_data(ticker):
     stock = yf.Ticker(ticker)
@@ -106,7 +110,10 @@ def run_single_backtest(df, ticker, config, strategy_type='conservative'):
 
 def load_config(model_name):
     try:
-        module = importlib.import_module(model_name)
+        try:
+            module = importlib.import_module(f"config.{model_name}")
+        except ImportError:
+            module = importlib.import_module(model_name)
         return module.CONFIG
     except ImportError:
         print(f"錯誤: 找不到模型設定檔 '{model_name}.py'")

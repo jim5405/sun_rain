@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import sys
 
 # 導入核心掃描模組
-import scan_module 
+from core import scan_module 
 
 # --- 全域常數 ---
 HOLD_LIST_FILE = "hold_list.txt"
@@ -167,8 +167,8 @@ if __name__ == '__main__':
         print("在掃描清單中未發現新的進出場機會。")
     else:
         # 分類顯示
-        buy_ops = [op for op in opportunities if "買入" in op['recommendation']]
-        sell_ops = [op for op in opportunities if "賣出" in op['recommendation'] or "減碼" in op['recommendation']]
+        buy_ops = [op for op in opportunities if "買入" in op['recommendation'] or "進場" in op['recommendation']]
+        sell_ops = [op for op in opportunities if "賣出" in op['recommendation'] or "減碼" in op['recommendation'] or "出場" in op['recommendation']]
         
         if buy_ops:
             print("\n  --- 🟢 潛在進場機會 ---")
