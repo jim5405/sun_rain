@@ -1,0 +1,19 @@
+Indicator,Category,Year Introduced,Parameters,Formula/Calculation,Overbought/Oversold,Best For,Crisis Effectiveness,Pros,Cons
+Simple Moving Average (SMA),Trend,1950,"Period (20,50,200)",Average of closing prices over n periods,N/A,Trend identification,Moderate,"Simple, smooths data",Lagging indicator
+Exponential Moving Average (EMA),Trend,1960,"Period (12,26)",Weighted average with emphasis on recent prices,N/A,Trend identification,Moderate-Good,Responsive to changes,Still lagging
+Relative Strength Index (RSI),Momentum,1978,Period (14),100 - (100/(1+RS)),">70 overbought, <30 oversold",Reversal points,Moderate,Normalized 0-100 scale,False signals in trends
+MACD,Momentum/Trend,1979,"12,26,9",12-EMA minus 26-EMA,N/A,Momentum and trend,Good,Multiple signals,Lagging
+Stochastic Oscillator,Momentum,1957,"14,3,3",(C-L14)/(H14-L14)*100,">80 overbought, <20 oversold",Reversal identification,Moderate,Two-line system,Whipsaw prone
+Bollinger Bands,Volatility,1983,"20, 2 std dev","Middle: 20-SMA, Bands: Middle ± 2*StdDev",Outside bands = extreme,Volatility and breakouts,Very Good,Adapts to volatility,Squeeze releases unreliable
+Average True Range (ATR),Volatility,1978,14,Smoothed average of true range values,N/A,Volatility measurement,Excellent,Accurate volatility,Not directional
+Keltner Channels,Volatility,1960,"20, 2*ATR","Middle: 20-EMA, Channels: Middle ± 2*ATR",Similar to Bollinger,Volatility and trends,Very Good,Uses ATR,Bollinger Bands overlap
+Average Directional Index (ADX),Trend,1978,14,ADX = smoothed(DI+ minus DI-),">25 strong trend, <20 weak",Trend strength,Good,Measures strength,"Non-directional, lagging"
+Ichimoku Cloud,Trend/All-in-one,1968,"9,26,52","5 lines: Tenkan, Kijun, Senkou Span A/B, Chikou",Cloud color = trend,Complete system,Very Good,Multiple indicators,Complex to interpret
+Parabolic SAR,Trend,1978,AF 0.02-0.2,SAR = Prior SAR ± AF(Prior EP - Prior SAR),N/A,Entry/exit signals,Moderate,Clear signals,Whipsaw in ranges
+On-Balance Volume (OBV),Volume,1963,Cumulative,OBV = Previous OBV ± Current Volume,N/A,Trend confirmation,Moderate,Shows accumulation,Cumulative drift
+Chaikin Money Flow (CMF),Volume,1986,21,Accumulation Distribution / Volume,"Above 0: buy, Below 0: sell",Money flow,Good,Divergence signals,Noisy data
+Money Flow Index (MFI),Volume,1989,14,100 - 100/(1+Money Flow Ratio),">80 overbought, <20 oversold",Extreme conditions,Good,Includes volume,RSI-like limitations
+Commodity Channel Index (CCI),Momentum,1980,20,(Typical Price - SMA)/(0.015*Mean Dev),">100 overbought, <-100 oversold",Ranging markets,Moderate,Cyclical signals,Many false signals
+Williams %R,Momentum,1973,14,-(H14-C)/(H14-L14)*100,">-20 overbought, <-80 oversold",Momentum,Moderate,Simple interpretation,Lagging in trends
+Aroon Indicator,Trend,1995,25,Aroon Up = (25-periods since high)/25*100,"Above 70: up, Below 30: down",Trend reversals,Good,Crossover signals,Lagging
+Ultimate Oscillator,Momentum,1976,"7,14,28",Weighted calculation of buying pressure,">70 overbought, <30 oversold",Multi-timeframe,Good,Multiple timeframes,Complex calculation
