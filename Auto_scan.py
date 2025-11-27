@@ -46,7 +46,7 @@ if __name__ == '__main__':
     
     # 獲取動態生成的掃描清單 (現在從 scan_module 獲取) 
     scan_list_dynamic = scan_module.get_dynamic_scan_list() 
-    held_tickers = scan_module.read_hold_list(HOLD_LIST_FILE)
+    held_tickers = scan_module.read_hold_list()
     
     # 最終的掃描清單是動態清單和持股清單的聯集
     all_tickers_to_scan = sorted(list(set(scan_list_dynamic) | held_tickers))
