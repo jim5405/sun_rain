@@ -19,4 +19,6 @@ CONFIG = {
     "drawdown_no_rain": -0.1,
     "adx_period": 14,
     "adx_threshold": 25,
+    "bb_window": 20,
+    "bb_std_dev": 2,
 }
